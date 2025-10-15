@@ -4,16 +4,23 @@ const query = util.promisify(db.query).bind(db);
 
 // Add a new bank
 exports.addBank = (req, res) => {
-  let { id, name, address, sms_uid, sms_pwd,phone, cancel_mode } = req.body;
+  let { id, name, address, sms_uid, sms_pwd, phone, cancel_mode } = req.body;
   id = id?.toUpperCase();
   name = name?.toUpperCase();
   address = address?.toUpperCase();
-  const sql = 'INSERT INTO bank (id, name, address, sms_uid,phone, sms_pwd, cancel_mode) VALUES (?, ?, ?, ?, ?, ?,?)';
-  db.query(sql, [id, name, address, sms_uid,phone, sms_pwd, cancel_mode], (err, result) => {
-    if (err) return res.status(500).send(err);
+
+  const sql = 'INSERT INTO bank (id, name, address, sms_uid, phone, sms_pwd, cancel_mode) VALUES (?, ?, ?, ?, ?, ?, ?)';
+  db.query(sql, [id, name, address, sms_uid, phone, sms_pwd, cancel_mode], (err, result) => {
+    if (err) {
+      if (err.code === 'ER_DUP_ENTRY') {
+        return res.status(400).send({ message: 'Bank ID already exists' });
+      }
+      return res.status(500).send(err);
+    }
     res.send({ message: 'Bank added successfully', result });
   });
 };
+
 
 // Get all banks
 exports.getBanks = (req, res) => {
