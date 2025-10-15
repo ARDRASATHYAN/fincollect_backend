@@ -1,0 +1,20 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "fc-db-test.cy2dubmcbvyo.ap-south-1.rds.amazonaws.com",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "fc-test",
+            "group": "Fincollect",
+            "database": "fc",
+            "username": "admin",
+            "askForPassword": true
+        }
+    ]
+}
