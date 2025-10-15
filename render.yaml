@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: fincollect-backend
+    env: node
+    branch: main
+    repo: https://github.com/ARDRASATHYAN/fincollect_backend
+    buildCommand: "npm install"
+    startCommand: "npm start"
+    plan: free
+    envVars:
+      - key: PORT
+        value: "5000"
+      - key: DB_HOST
+        value: "fc-db-test.cy2dubmcbvyo.ap-south-1.rds.amazonaws.com"
+      - key: DB_USER
+        value: "admin"
+      - key: DB_PASSWORD
+        value: "maximadmin"
+      - key: DB_NAME
+        value: "fc"
+      - key: DB_PORT
+        value: "3306"
+      - key: MAIL_HOST
+        value: "smtp.gmail.com"
+      - key: MAIL_PORT
+        value: "587"
+      - key: MAIL_USER
+        value: "maxence4602@gmail.com"
+      - key: MAIL_PASS
+        value: "sdjd okls hlmg lxvh"
+      - key: FRONTEND_URL
+        value: "http://localhost:5173"

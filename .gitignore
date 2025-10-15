@@ -1,11 +1,5 @@
-# Logs
+node_modules/
 
-
-node_modules
-
-
-# Editor directories and files
-.vscode/*
-
-
+.vscode/
 .env
+fc-test.session.sql
