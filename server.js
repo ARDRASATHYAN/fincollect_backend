@@ -6,6 +6,7 @@ const agentrouter = require('./routes/agentRoutes');
 const depositcoderouter = require('./routes/depositcodeRouter');
 const smstemplaterouter = require('./routes/smstemplateRoutes');
 const userrouter = require('./routes/userRoutes');
+const transactionrouter = require('./routes/transactionRoute');
 
 require('dotenv').config();
 
@@ -19,6 +20,7 @@ app.use('/agent', agentrouter);
 app.use('/depositcode', depositcoderouter);
 app.use('/smstemplate', smstemplaterouter);
 app.use('/users', userrouter);
+app.use('/transaction', transactionrouter);
 
 
 
