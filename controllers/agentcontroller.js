@@ -52,38 +52,59 @@ exports.createAgent = async (req, res) => {
       collection_status, print_required, sms_required
     } = req.body;
 
-      branch = branch?.toUpperCase();
+    branch = branch?.toUpperCase();
     id = id?.toUpperCase();
     name = name?.toUpperCase();
     mname = mname?.toUpperCase();
 
-    // 1️⃣ Hash password and pin before saving
     const hashedPwd = await bcrypt.hash(pwd, 10);
     const hashedPin = await bcrypt.hash(pin, 10);
 
-    const sql = `
-      INSERT INTO agent
-      (bid, branch, mobile, id, name, mname, pwd, pin, status, enabled, pwd_expiry_days, pwdloginattempt, pinloginattempt, collection_status, print_required, sms_required)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
+    // ✅ Check for duplicate primary key
+    const checkIdSql = `SELECT * FROM agent WHERE CONCAT(bid, '-', id) = ?`;
+    db.query(checkIdSql, [`${bid}-${id}`], (err, idResult) => {
+      if (err) return res.status(500).json({ error: "Database error" });
 
-    const values = [
-      bid, branch, mobile, id, name, mname,
-      hashedPwd, hashedPin, status, enabled ? 1 : 0,
-      pwd_expiry_days, pwdloginattempt, pinloginattempt,
-      collection_status ? 1 : 0, print_required ? 1 : 0, sms_required ? 1 : 0
-    ];
-
-    db.query(sql, values, (err, result) => {
-      if (err) {
-        console.error("DB Error:", err);
-        return res.status(500).json({ error: "Database error" });
+      if (idResult.length > 0) {
+        return res.status(400).json({ error: `Agent with ID '${bid}-${id}' already exists!` });
       }
-      res.status(201).json({
-        message: "Agent added successfully",
-        id: result.insertId
-      });
-    });
+
+      // ✅ Check for duplicate mobile
+      const checkMobileSql = `SELECT * FROM agent WHERE mobile = ?`;
+      db.query(checkMobileSql, [mobile], (err, mobileResult) => {
+        if (err) return res.status(500).json({ error: "Database error" });
+
+        if (mobileResult.length > 0) {
+          return res.status(400).json({ error: `Mobile number '${mobile}' is already used!` });
+        }
+
+        // ✅ Insert agent
+        const insertSql = `
+          INSERT INTO agent
+          (bid, branch, mobile, id, name, mname, pwd, pin, status, enabled, pwd_expiry_days, pwdloginattempt, pinloginattempt, collection_status, print_required, sms_required)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+
+        const values = [
+          bid, branch, mobile, id, name, mname,
+          hashedPwd, hashedPin, status, enabled ? 1 : 0,
+          pwd_expiry_days, pwdloginattempt, pinloginattempt,
+          collection_status ? 1 : 0, print_required ? 1 : 0, sms_required ? 1 : 0
+        ];
+
+        db.query(insertSql, values, (err, result) => {
+          if (err) {
+            console.error("DB Error:", err);
+            return res.status(500).json({ error: "Database error" });
+          }
+          res.status(201).json({
+            message: "Agent added successfully",
+            id: `${bid}-${id}`
+          });
+        });
+
+      }); // end mobile check
+    }); // end ID check
 
   } catch (error) {
     console.error("Server Error:", error);
@@ -93,7 +114,8 @@ exports.createAgent = async (req, res) => {
 
 
 
-// GET agent by ID
+
+
 // GET agent by bank ID and agent ID
 exports.getAgentById = (req, res) => {
   const { bid, id } = req.params;

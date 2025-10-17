@@ -15,6 +15,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// require('./models/userModel');
+
 app.use('/banks', bankrouter);
 app.use('/agent', agentrouter);
 app.use('/depositcode', depositcoderouter);

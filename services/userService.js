@@ -50,19 +50,27 @@ const UserService = {
       });
     }),
 
-  createUser: async ({ id, name, email, password, role, status }) => {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    return new Promise((resolve, reject) => {
-      db.query(
-        "INSERT INTO users (id, name, email, password, role, status) VALUES (?, ?, ?, ?, ?, ?)",
-        [id, name, email, hashedPassword, role, status ? 1 : 0],
-        (err) => {
-          if (err) reject(err);
-          else resolve({ id, name, email, role, status });
-        }
-      );
-    });
-  },
+ createUser: async ({ name, email, password, role, status }) => {
+  const hashedPassword = await bcrypt.hash(password, 10);
+  return new Promise((resolve, reject) => {
+    db.query(
+      "INSERT INTO users (name, email, password, role, status) VALUES (?, ?, ?, ?, ?)",
+      [name, email, hashedPassword, role, status ? 1 : 0],
+      (err, results) => {
+        if (err) reject(err);
+        else
+          resolve({
+            id: results.insertId,
+            name,
+            email,
+            role,
+            status,
+          });
+      }
+    );
+  });
+},
+
 
   updateUser: (id, { name, email, role, status }) =>
     new Promise((resolve, reject) => {
