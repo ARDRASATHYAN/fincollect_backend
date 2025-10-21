@@ -42,7 +42,7 @@ exports.getDepositCodes = (req, res) => {
 // CREATE new depositcode
 exports.createdepositcode = async (req, res) => {
   try {
-    let { bid, code, description, times, multiples } = req.body;
+    let { bid, code, description, times, multiples,Stmt_Req } = req.body;
 
     // Capitalize code and description
     code = code?.toUpperCase();
@@ -50,11 +50,11 @@ exports.createdepositcode = async (req, res) => {
 
     const sql = `
       INSERT INTO depositcode
-      (bid, code, description, times, multiples)
-      VALUES (?, ?, ?, ?, ?)
+      (bid, code, description, times, multiples,Stmt_Req)
+      VALUES (?, ?, ?, ?, ?,?)
     `;
 
-    const values = [bid, code, description, times, multiples];
+    const values = [bid, code, description, times, multiples,Stmt_Req];
 
     db.query(sql, values, (err, result) => {
       if (err) {
@@ -131,14 +131,14 @@ exports.getDepositCodeById = (req, res) => {
 // UPDATE deposit code (bid + code cannot change)
 exports.updateDepositCode = (req, res) => {
   const { bid, code } = req.params;
-  const { description, times, multiples, Stmt_req } = req.body;
+  const { description, times, multiples, Stmt_Req } = req.body;
 
   const sql = `
     UPDATE depositcode
-    SET description = ?, times = ?, multiples = ?, Stmt_req = ?
+    SET description = ?, times = ?, multiples = ?, Stmt_Req = ?
     WHERE bid = ? AND code = ?
   `;
-  db.query(sql, [description, times, multiples, Stmt_req, bid, code], (err, result) => {
+  db.query(sql, [description, times, multiples, Stmt_Req, bid, code], (err, result) => {
     if (err) return res.status(500).json({ error: err });
     if (result.affectedRows === 0) return res.status(404).json({ message: "Deposit code not found" });
     res.json({ message: "Deposit code updated successfully" });
