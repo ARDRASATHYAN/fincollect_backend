@@ -10,23 +10,26 @@ services:
     envVars:
       - key: PORT
         value: "5000"
+
       - key: DB_HOST
-        value: "fc-db-test.cy2dubmcbvyo.ap-south-1.rds.amazonaws.com"
+        sync: false
       - key: DB_USER
-        value: "admin"
+        sync: false
       - key: DB_PASSWORD
-        value: "maximadmin"
+        sync: false
       - key: DB_NAME
-        value: "fc"
+        sync: false
       - key: DB_PORT
-        value: "3306"
+        sync: false
+
       - key: MAIL_HOST
-        value: "smtp.gmail.com"
+        sync: false
       - key: MAIL_PORT
-        value: "587"
+        sync: false
       - key: MAIL_USER
-        value: "maxence4602@gmail.com"
+        sync: false
       - key: MAIL_PASS
-        value: "sdjd okls hlmg lxvh"
+        sync: false
+
       - key: FRONTEND_URL
-        value: "http://localhost:5173"
+        sync: false

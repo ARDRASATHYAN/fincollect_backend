@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 
 const hashes = [
- "$2a$11$P/YmV5xu3OiA9m.Q0fbEwedOGb9ktPEwHIPHHq92BJlA/m1OghxHi"
+ "$2b$10$XYHgf5dMcDEOJuwrk87cl.1FGXbhd0H5MdgirpCjDtQF1HFCd.eu6","$2b$10$G2BJkvELMaBoiMwE/3BH6O96SswEa5RX/ptRmZrz4hbcwhc9av0kO"
 
 ];
 
