@@ -149,6 +149,10 @@ exports.updateAgent = async (req, res) => {
     pwd_expiry_days, pwdloginattempt, pinloginattempt
   } = req.body;
 
+  branch = branch?.toUpperCase();
+    name = name?.toUpperCase();
+    mname = mname?.toUpperCase();
+
   if (!req.body) return res.status(400).json({ error: "No data provided" });
 
   try {

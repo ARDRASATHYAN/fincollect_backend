@@ -131,7 +131,8 @@ exports.getDepositCodeById = (req, res) => {
 // UPDATE deposit code (bid + code cannot change)
 exports.updateDepositCode = (req, res) => {
   const { bid, code } = req.params;
-  const { description, times, multiples, Stmt_Req } = req.body;
+  let { description, times, multiples, Stmt_Req } = req.body;
+  description = description?.toUpperCase();
 
   const sql = `
     UPDATE depositcode
