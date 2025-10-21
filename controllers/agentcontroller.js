@@ -138,6 +138,8 @@ exports.getAgentById = (req, res) => {
 };
 
 
+
+
 exports.updateAgent = async (req, res) => {
   const { bid, id } = req.params;
   let {
@@ -152,14 +154,27 @@ exports.updateAgent = async (req, res) => {
   try {
     const saltRounds = 10;
 
-    // Hash password if provided
-    if (pwd) {
+    // Fetch existing agent first
+    const [existing] = await new Promise((resolve, reject) => {
+      db.query("SELECT * FROM agent WHERE bid = ? AND id = ?", [bid, id], (err, result) => {
+        if (err) return reject(err);
+        resolve(result);
+      });
+    });
+
+    if (!existing) return res.status(404).json({ error: "Agent not found" });
+
+    // Only hash if password/PIN is provided and not already hashed
+    if (pwd && !pwd.startsWith("$2b$")) {
       pwd = await bcrypt.hash(pwd, saltRounds);
+    } else {
+      pwd = existing.pwd; // keep existing
     }
 
-    // Hash PIN if provided
-    if (pin) {
+    if (pin && !pin.startsWith("$2b$")) {
       pin = await bcrypt.hash(pin, saltRounds);
+    } else {
+      pin = existing.pin; // keep existing
     }
 
     const sql = `
@@ -189,6 +204,7 @@ exports.updateAgent = async (req, res) => {
     res.status(500).json({ error: "Server error", details: err.message });
   }
 };
+
 
 
 
