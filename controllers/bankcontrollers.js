@@ -61,7 +61,11 @@ exports.getBankById = (req, res) => {
 // Update a bank by ID
 exports.updateBank = (req, res) => {
   const bankId = req.params.id;
-  const { name, address, sms_uid, sms_pwd,phone, cancel_mode } = req.body;
+  let { name, address, sms_uid, sms_pwd,phone, cancel_mode } = req.body;
+
+  name = name?.toUpperCase();
+  address = address?.toUpperCase();
+  
   const sql = `
     UPDATE bank 
     SET name = ?, address = ?, sms_uid = ?, sms_pwd = ?, cancel_mode = ?,phone=?
