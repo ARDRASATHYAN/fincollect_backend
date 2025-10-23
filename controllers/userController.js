@@ -128,7 +128,7 @@ exports.requestPasswordReset = async (req, res) => {
     // Send email using SendGrid API
     const msg = {
       to: email,
-      from: "maxence4602@gmail.com", // Verified sender in SendGrid
+      from: process.env.MAIL_USER, // Verified sender in SendGrid
       subject: "Reset your password",
       html: `<p>Click the link below to reset your password (valid 15minutes):</p>
              <a href="${resetLink}">${resetLink}</a>`,
@@ -144,7 +144,7 @@ exports.requestPasswordReset = async (req, res) => {
 };
 
 
-
+// requestPasswordReset using nodemailer
 
 // exports.requestPasswordReset = async (req, res) => {
 //   const { email } = req.body;
@@ -188,6 +188,10 @@ exports.requestPasswordReset = async (req, res) => {
 
 
 // ✅ 2. Reset password
+
+
+
+
 exports.resetPassword = async (req, res) => {
   const { token, password } = req.body;
 
