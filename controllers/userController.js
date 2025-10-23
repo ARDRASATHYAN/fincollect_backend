@@ -118,7 +118,7 @@ exports.requestPasswordReset = async (req, res) => {
     if (!user) return res.status(404).json({ message: "User not found" });
 
     const token = crypto.randomBytes(32).toString("hex");
-    const expiry = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+    const expiry = new Date(Date.now() + 15 * 60 * 1000); // 1 hour
 
     await setResetToken(email, token, expiry);
 
