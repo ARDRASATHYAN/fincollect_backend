@@ -130,7 +130,7 @@ exports.requestPasswordReset = async (req, res) => {
       to: email,
       from: "maxence4602@gmail.com", // Verified sender in SendGrid
       subject: "Reset your password",
-      html: `<p>Click the link below to reset your password (valid 1 hour):</p>
+      html: `<p>Click the link below to reset your password (valid 15minutes):</p>
              <a href="${resetLink}">${resetLink}</a>`,
     };
 
