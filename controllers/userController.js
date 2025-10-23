@@ -130,8 +130,26 @@ exports.requestPasswordReset = async (req, res) => {
       to: email,
       from: process.env.MAIL_USER, // Verified sender in SendGrid
       subject: "Reset your password",
-      html: `<p>Click the link below to reset your password (valid 15minutes):</p>
-             <a href="${resetLink}">${resetLink}</a>`,
+       html: `
+    <div style="font-family: Arial, sans-serif; line-height: 1.5; color: #333;">
+      <h2 style="color: #1a73e8;">Password Reset Request</h2>
+      <p>We received a request to reset your password. Click the button below to reset it:</p>
+      <a href="${resetLink}" 
+         style="
+           display: inline-block;
+           padding: 12px 24px;
+           margin: 10px 0;
+           background-color: #1a73e8;
+           color: #ffffff;
+           text-decoration: none;
+           border-radius: 6px;
+           font-weight: bold;
+         ">
+        Reset Password
+      </a>
+      <p style="font-size: 0.9em; color: #555;">If you didn’t request this, just ignore this email.</p>
+    </div>
+  `,
     };
 
     await sgMail.send(msg);
