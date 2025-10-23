@@ -139,7 +139,7 @@ exports.requestPasswordReset = async (req, res) => {
            display: inline-block;
            padding: 12px 24px;
            margin: 10px 0;
-           background-color: #0000;
+           background-color: #01050bff;
            color: #ffffff;
            text-decoration: none;
            border-radius: 6px;
