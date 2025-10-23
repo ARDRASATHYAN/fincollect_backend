@@ -66,10 +66,10 @@ exports.deleteUser = async (req, res) => {
 exports.login = async (req, res) => {
     const { email, password } = req.body;
     const user = await getUserByEmail(email);
-    if (!user) return res.status(401).json({ message: "Invalid credentials" });
+    if (!user) return res.status(401).json({ message: "Invalid email" });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
+    if (!isMatch) return res.status(401).json({ message: "Invalid password" });
 
     const payload = { id: user.id, email: user.email, role: user.role };
     const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
@@ -205,11 +205,7 @@ exports.requestPasswordReset = async (req, res) => {
 
 
 
-// ✅ 2. Reset password
-
-
-
-
+//  2. Reset password
 exports.resetPassword = async (req, res) => {
   const { token, password } = req.body;
 
