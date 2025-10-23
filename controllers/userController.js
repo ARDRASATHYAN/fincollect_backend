@@ -9,6 +9,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const ACCESS_TOKEN_SECRET = "access_secret";
 const REFRESH_TOKEN_SECRET = "refresh_secret";
@@ -108,8 +110,6 @@ exports.refreshToken = async (req, res) => {
 
 
 
-
-
 exports.requestPasswordReset = async (req, res) => {
   const { email } = req.body;
 
@@ -125,29 +125,65 @@ exports.requestPasswordReset = async (req, res) => {
     const resetLink = `${process.env.FRONTEND_URL}/resetpassword/${token}`;
     console.log("Reset link:", resetLink); // For testing
 
-    // Use env variables for email
-    const transporter = nodemailer.createTransport({
-      host: process.env.MAIL_HOST,
-      port: process.env.MAIL_PORT,
-      secure: false,
-      auth: {
-        user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASS,
-      },
-    });
-
-    await transporter.sendMail({
-      from: process.env.MAIL_USER,
+    // Send email using SendGrid API
+    const msg = {
       to: email,
+      from: "maxence4602@gmail.com", // Verified sender in SendGrid
       subject: "Reset your password",
-      text: `Click here to reset your password: ${resetLink}`,
-    });
+      html: `<p>Click the link below to reset your password (valid 1 hour):</p>
+             <a href="${resetLink}">${resetLink}</a>`,
+    };
+
+    await sgMail.send(msg);
 
     res.json({ message: "Password reset link sent to your email." });
   } catch (err) {
+    console.error("Password reset error:", err);
     res.status(500).json({ error: err.message });
   }
 };
+
+
+
+
+// exports.requestPasswordReset = async (req, res) => {
+//   const { email } = req.body;
+
+//   try {
+//     const user = await getUserByEmail(email);
+//     if (!user) return res.status(404).json({ message: "User not found" });
+
+//     const token = crypto.randomBytes(32).toString("hex");
+//     const expiry = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+
+//     await setResetToken(email, token, expiry);
+
+//     const resetLink = `${process.env.FRONTEND_URL}/resetpassword/${token}`;
+//     console.log("Reset link:", resetLink); // For testing
+
+//     // Use env variables for email
+//     const transporter = nodemailer.createTransport({
+//       host: process.env.MAIL_HOST,
+//       port: process.env.MAIL_PORT,
+//       secure: false,
+//       auth: {
+//         user: process.env.MAIL_USER,
+//         pass: process.env.MAIL_PASS,
+//       },
+//     });
+
+//     await transporter.sendMail({
+//       from: process.env.MAIL_USER,
+//       to: email,
+//       subject: "Reset your password",
+//       text: `Click here to reset your password: ${resetLink}`,
+//     });
+
+//     res.json({ message: "Password reset link sent to your email." });
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// };
 
 
 
