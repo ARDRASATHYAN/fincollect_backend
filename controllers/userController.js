@@ -132,14 +132,14 @@ exports.requestPasswordReset = async (req, res) => {
       subject: "Reset your password",
        html: `
     <div style="font-family: Arial, sans-serif; line-height: 1.5; color: #333;">
-      <h2 style="color: #1a73e8;">Password Reset Request</h2>
+      <h2 style="color: #01050bff;">Password Reset Request</h2>
       <p>We received a request to reset your password. Click the button below to reset it:</p>
       <a href="${resetLink}" 
          style="
            display: inline-block;
            padding: 12px 24px;
            margin: 10px 0;
-           background-color: #1a73e8;
+           background-color: #0000;
            color: #ffffff;
            text-decoration: none;
            border-radius: 6px;
