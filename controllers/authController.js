@@ -21,7 +21,7 @@ exports.login = async (req, res) => {
     if (!isMatch) return res.status(401).json({ message: "Invalid password" });
 
     const payload = { id: user.id, email: user.email, role: user.role };
-    const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
+    const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: "1d" });
     const refreshToken = jwt.sign(payload, REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
 
     await saveRefreshToken(user.id, refreshToken);
@@ -52,7 +52,7 @@ exports.refreshToken = async (req, res) => {
       }
 
       const payload = { id: user.id, email: user.email, role: user.role };
-      const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
+      const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: "1d" });
       res.json({ accessToken });
     });
   } catch (err) {
