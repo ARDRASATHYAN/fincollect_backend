@@ -8,6 +8,7 @@ const smstemplaterouter = require('./routes/smstemplateRoutes');
 const userrouter = require('./routes/userRoutes');
 const transactionrouter = require('./routes/transactionRoute');
 const authrouter = require('./routes/authRoutes');
+const buserRouter = require('./routes/buserRoutes');
 
 require('dotenv').config();
 
@@ -24,6 +25,7 @@ app.use('/depositcode', depositcoderouter);
 app.use('/smstemplate', smstemplaterouter);
 app.use('/users', userrouter);
 app.use('/transaction', transactionrouter);
+app.use('/buser', buserRouter);
 app.use('/auth', authrouter);
 
 
