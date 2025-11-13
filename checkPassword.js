@@ -1,11 +1,11 @@
 const bcrypt = require("bcrypt");
 
 const hashes = [
- "$2b$10$OlluTgoocpTs40sYM4QCQe8fv.fOG3FDBeA34NB/CRaKKprvE84ga"
+ "$2b$10$VbvM3S/k0.P6Ms4gZESxd.8KZ28aQCjzW5eLCSxtYDWbIJiVOUY5K"
 
 ];
 
-const plaintext = "welcome";
+const plaintext = "Apple@100";
 
 async function checkHashes() {
   for (const hash of hashes) {

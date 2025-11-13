@@ -31,7 +31,6 @@ exports.createBUser = async (req, res) => {
     let {
       bid, mobile, name,
       pwd, pin, status, enabled,
-      last_login_date, pwd_changed_date,
       pwd_expiry_days, pwdloginattempt, pinloginattempt,
     } = req.body;
 
@@ -52,16 +51,16 @@ exports.createBUser = async (req, res) => {
         const insertSql = `
           INSERT INTO buser
           (bid, mobile, name, pwd, pin, status, enabled,
-           pwd_expiry_days, pwdloginattempt, pinloginattempt,
-           last_login_date, pwd_changed_date)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+           pwd_expiry_days, pwdloginattempt, pinloginattempt
+          )
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
         const values = [
           bid, mobile, name,
           hashedPwd, hashedPin, status, enabled ? 1 : 0,
           pwd_expiry_days, pwdloginattempt, pinloginattempt,
-          last_login_date, pwd_changed_date,
+        
         ];
 
         db.query(insertSql, values, (err) => {
