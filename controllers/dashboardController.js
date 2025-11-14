@@ -18,19 +18,14 @@ exports.getDashboardData = async (req, res) => {
     // Get ONLY grand total of active agents' active transactions
     const [grandTotalResult] = await db.promise().query(`
       SELECT 
-          SUM(
-              CASE 
-                  WHEN t.amount REGEXP '^[0-9]+(\\.[0-9]+)?$'
-                  THEN CAST(t.amount AS DECIMAL(15,2))
-                  ELSE 0
-              END
-          ) AS grand_total
-      FROM transaction t
-      INNER JOIN agent a 
-              ON a.id = t.id
-             AND a.bid = t.bid
-      WHERE a.status = 'A'
-        AND t.status = 1
+    SUM(t.amount) AS grand_total
+FROM transaction t
+INNER JOIN agent a 
+        ON a.id = t.id
+       AND a.bid = t.bid
+WHERE a.status = 'A'
+  AND t.status = 1;
+
     `);
 
     const grandTotal = Number(grandTotalResult[0].grand_total || 0);
