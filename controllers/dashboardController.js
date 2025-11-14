@@ -2,7 +2,7 @@ const db = require("../db");
 
 exports.getDashboardData = async (req, res) => {
   const [banks] = await db.promise().query("SELECT id, name FROM bank");
-  const [agents] = await db.promise().query("SELECT bid, branch FROM agent");
+  const [agents] = await db.promise().query("SELECT bid, branch FROM agent where status='A'");
 
   const banksData = banks.map((bank) => {
     const bankAgents = agents.filter((a) => a.bid === bank.id);
