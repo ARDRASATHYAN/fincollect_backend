@@ -60,6 +60,7 @@ WHERE a.status = 'A'
       totalBranches: banksData.reduce((a, b) => a + b.branches.length, 0),
       totalAgents: banksData.reduce((a, b) => a + b.totalAgents, 0),
       totalAmount: grandTotal, // ✅ Only this amount kept
+      totalRevenue:banksData.length*2500,
     };
 
     // 6️⃣ Final Response
