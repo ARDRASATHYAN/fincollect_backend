@@ -53,14 +53,14 @@ WHERE a.status = 'A'
         totalAgents: bankAgents.length,
       };
     });
-
+const totalAgents = banksData.reduce((a, b) => a + b.totalAgents, 0);
     // 5️⃣ Summary
     const summary = {
       totalBanks: banksData.length,
       totalBranches: banksData.reduce((a, b) => a + b.branches.length, 0),
-      totalAgents: banksData.reduce((a, b) => a + b.totalAgents, 0),
+      totalAgents,
       totalAmount: grandTotal, // ✅ Only this amount kept
-      totalRevenue:banksData.length*2500,
+      totalRevenue:totalAgents*2500,
     };
 
     // 6️⃣ Final Response
