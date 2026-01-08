@@ -288,10 +288,10 @@ exports.updateAgent = async (req, res) => {
 
 // // DELETE agent
 exports.deleteAgent = (req, res) => {
-  const { id } = req.params;
+  const { id ,bid} = req.params;
 
-  const sql = 'DELETE FROM agent WHERE id = ?';
-  db.query(sql, [id], (err, result) => {
+  const sql = 'DELETE FROM agent WHERE  bid = ? AND id = ?';
+  db.query(sql, [bid,id], (err, result) => {
     if (err) {
       console.error(err);
       return res.status(500).json({ error: 'Database error' });
